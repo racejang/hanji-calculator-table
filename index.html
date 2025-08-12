@@ -25,7 +25,19 @@
   .row .field{flex:1}
   .btn{background:var(--acc); color:#fff; border:none; padding:10px 14px; border-radius:6px; font-weight:700; cursor:pointer; font-size:15px;}
   .btn.secondary{background:#f2f4f6; color:#333; border:1px solid #ccc}
-  .actions{display:flex; gap:10px; flex-wrap:wrap}
+  /* 버튼을 입력칸 폭에 맞게 */
+  .actions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .actions .btn { width: 100%; }
+  /* 안내문 */
+  .note {
+    font-size: 12px;
+    color: #777;
+    margin-top: 6px;
+  }
   .kpis{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin-top:10px}
   .kpi{background:#f9f9f9; border:1px solid #ddd; border-radius:6px; padding:12px}
   .kpi .v{font-weight:700; font-size:18px}
@@ -66,6 +78,7 @@
         <div class="actions" style="margin-top:12px">
           <button class="btn" id="calc">계산하기</button>
           <button class="btn secondary" id="csv">CSV 내보내기</button>
+          <div class="note">가로·세로 길이를 입력한 뒤 <b>계산하기</b>를 눌러 표가 생성됩니다.</div>
         </div>
         <div class="kpis" id="kpis" style="display:none">
           <div class="kpi"><div class="v" id="area">0.0000</div><div>면적 (㎡)</div></div>
