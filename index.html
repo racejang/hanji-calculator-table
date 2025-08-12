@@ -7,7 +7,11 @@
 <style>
   :root{ --bg:#f9fafb; --card:#ffffff; --muted:#555; --text:#222; --acc:#1d7a5c; --grid:#ddd; }
   *{box-sizing:border-box}
-  body{margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Apple SD Gothic Neo,Malgun Gothic,Arial,sans-serif; background:var(--bg); color:var(--text);}
+  html{ -webkit-text-size-adjust:100%; }
+  body{
+    margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Apple SD Gothic Neo,Malgun Gothic,Arial,sans-serif;
+    background:var(--bg); color:var(--text);
+  }
   .wrap{max-width:1100px; margin:32px auto; padding:0 16px}
   .notice{background:#eef3f7; border:1px solid #d5dce3; color:#333; padding:10px 14px; border-radius:8px; font-size:14px; display:flex; gap:8px; align-items:center; margin-bottom:16px}
   .card{background:var(--card); border:1px solid #ccc; border-radius:10px; box-shadow:0 4px 12px rgba(0,0,0,.05)}
@@ -18,7 +22,10 @@
   @media (min-width:880px){ .grid{grid-template-columns:1.1fr 1fr} }
   .field{display:flex; flex-direction:column; gap:6px}
   label{font-size:13px; color:var(--muted)}
-  input[type="text"]{background:#fff; border:1px solid #ccc; color:#text; padding:10px; border-radius:6px; font-size:16px; outline:none;}
+  input[type="text"]{
+    background:#fff; border:1px solid #ccc; color:var(--text);
+    padding:10px; border-radius:6px; font-size:16px; outline:none;
+  }
   input[type="text"]:focus{border-color:var(--acc); box-shadow:0 0 0 3px rgba(29,122,92,.15)}
   .hint{font-size:12px; color:#777}
   .row{display:flex; gap:12px}
@@ -26,29 +33,42 @@
   .btn{background:var(--acc); color:#fff; border:none; padding:10px 14px; border-radius:6px; font-weight:700; cursor:pointer; font-size:15px;}
   .btn.secondary{background:#f2f4f6; color:#333; border:1px solid #ccc}
   /* 버튼을 입력칸 폭에 맞게 */
-  .actions {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-  .actions .btn { width: 100%; }
+  .actions{ display:grid; grid-template-columns:1fr; gap:10px; }
+  .actions .btn{ width:100%; }
   /* 안내문 */
-  .note {
-    font-size: 12px;
-    color: #777;
-    margin-top: 6px;
-  }
+  .note{ font-size:12px; color:#777; margin-top:6px; }
   .kpis{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin-top:10px}
   .kpi{background:#f9f9f9; border:1px solid #ddd; border-radius:6px; padding:12px}
   .kpi .v{font-weight:700; font-size:18px}
-  table{width:100%; border-collapse:collapse}
-  th,td{padding:8px 10px; border:1px solid #ccc}
+
+  /* 표 공통 */
+  .tbl{
+    border:1px solid #ccc; border-radius:6px; background:#fff;
+    overflow-x:auto; /* 모바일에서 가로 스크롤 허용 */
+    -webkit-overflow-scrolling:touch;
+  }
+  table{
+    width:100%; border-collapse:collapse; table-layout:auto; min-width:420px; /* 너무 좁아져 깨짐 방지 */
+    white-space:nowrap; word-break:keep-all; /* 한글 강제 줄바꿈 방지 */
+  }
+  th,td{padding:8px 10px; border:1px solid #ccc; text-align:center;}
   thead th{background:#f2f4f6; font-weight:700}
   tbody tr:hover td{background:#f9fbfc}
-  .tbl{border:1px solid #ccc; border-radius:6px; overflow:hidden; background:#fff}
+
   .two{display:grid; gap:16px}
   @media (min-width:880px){ .two{grid-template-columns:1fr 1fr} }
+
   .foot{padding:14px 20px; font-size:12px; color:#555; background:#f2f4f6}
+
+  /* 모바일 최적화 */
+  @media (max-width:480px){
+    .head h1{font-size:18px}
+    th,td{padding:6px 8px; font-size:13px}
+    .kpi{padding:10px}
+    .kpi .v{font-size:16px}
+    .row{gap:8px}
+    input[type="text"]{font-size:15px; padding:9px}
+  }
 </style>
 </head>
 <body>
@@ -78,7 +98,7 @@
         <div class="actions" style="margin-top:12px">
           <button class="btn" id="calc">계산하기</button>
           <button class="btn secondary" id="csv">CSV 내보내기</button>
-          <div class="note">가로·세로 길이를 입력한 뒤 <b>계산하기</b>버튼을 눌러야 값이 반영됩니다.</div>
+          <div class="note">가로·세로 길이를 입력한 뒤 <b>계산하기</b> 버튼을 눌러야 값이 반영됩니다.</div>
         </div>
         <div class="kpis" id="kpis" style="display:none">
           <div class="kpi"><div class="v" id="area">0.0000</div><div>면적 (㎡)</div></div>
@@ -147,8 +167,8 @@
   const basisTBody = $('#tblBasisToMass tbody'), donBasisTBody = $('#tblDonToBasis tbody');
   const basisTitle = $('#basisTitle'), donBasisTitle = $('#donBasisTitle');
 
-  wEl.value = '63.0'; 
-  hEl.value = '93.0'; 
+  wEl.value = '63.0';
+  hEl.value = '93.0';
 
   function calc(){
     const w = toNum(wEl.value), h = toNum(hEl.value);
@@ -157,7 +177,7 @@
     basisTitle.textContent = '평량(g/㎡) → 질량(g)';
     donBasisTitle.textContent= '돈(몬메) → 평량(g/㎡)';
 
-    const area = (w*h)/10000; 
+    const area = (w*h)/10000;
     areaEl.textContent = round4(area).toFixed(4);
     sheetsEl.textContent = '1';
     kpis.style.display = 'grid';
@@ -216,6 +236,3 @@
 </script>
 </body>
 </html>
-
-
-
