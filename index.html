@@ -69,6 +69,39 @@
     .row{gap:8px}
     input[type="text"]{font-size:15px; padding:9px}
   }
+  /* === 모바일 튀어나옴 방지: 이 블록을 <style> 맨 아래에 추가 === */
+
+/* 그리드/플렉스 자식이 실제로 줄어들 수 있게 */
+.wrap, .card, .body, .grid, .row, .field, .tbl { min-width: 0; }
+.row .field { flex: 1; min-width: 0; }
+input[type="text"] { min-width: 0; width: 100%; box-sizing: border-box; }
+
+/* 카드가 부모보다 커지지 않게 + 넘침 숨김(필요 시 스크롤은 .tbl에서 처리) */
+.card { max-width: 100%; overflow: hidden; }
+
+/* 탭/그리드 셀도 강제 줄어듦 허용(긴 텍스트 대비) */
+.grid { grid-template-columns: minmax(0, 1fr); } /* 기본 1열 */
+@media (min-width: 880px){
+  .grid { grid-template-columns: 1.1fr 1fr; }   /* 원래 설정 복원 */
+}
+
+/* 모바일에서 행이 너무 꽉 차면 줄바꿈 허용(선택) */
+@media (max-width: 480px){
+  .row { flex-wrap: wrap; }
+}
+
+/* 표: 컨테이너 안에서만 가로 스크롤 */
+.tbl { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: auto;
+  min-width: 420px;           /* 기존 유지 */
+  white-space: nowrap;        /* 숫자/단위 한줄 유지 */
+}
+
+/* 페이지 전체 가로 넘침 안전장치 (디버그 끝나면 빼도 됨) */
+html, body { overflow-x: clip; }
 </style>
 </head>
 <body>
@@ -236,3 +269,4 @@
 </script>
 </body>
 </html>
+
