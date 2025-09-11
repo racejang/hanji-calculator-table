@@ -108,7 +108,7 @@ html, body { overflow-x: clip; }
 .card table{
   /* 이전에 width:100%로 되어 있었다면 이걸로 덮어쓰기 */
   width: auto;
-  max-width: min(100%, var(--table-max));
+  max-width: 450px;          /* 원하는 최대 폭 (예: 400~560px 사이로 조절) */
   margin: 0 auto;            /* 가운데 정렬 */
   display: table;            /* 필요 시 block → table 로 복귀 */
   table-layout: fixed;       /* 셀을 균등하게 줄이기 쉬움 */
@@ -307,4 +307,5 @@ html, body { overflow-x: clip; }
 </script>
 </body>
 </html>
+
 
