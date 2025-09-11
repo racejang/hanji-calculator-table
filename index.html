@@ -90,16 +90,19 @@ input[type="text"] { min-width: 0; width: 100%; box-sizing: border-box; }
   .row { flex-wrap: wrap; }
 }
 
-/* 표: 컨테이너 안에서만 가로 스크롤 */
-.tbl { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+/* 표: 창 크기에 맞게 자동 줄이기 */
+.tbl { overflow-x: hidden; } /* 스크롤 필요 없으니 auto → hidden */
 table {
   width: 100%;
   border-collapse: collapse;
-  table-layout: auto;
-  min-width: 420px;           /* 기존 유지 */
-  white-space: nowrap;        /* 숫자/단위 한줄 유지 */
+  table-layout: fixed;       /* 열을 균등 분배해서 화면에 맞춤 */
+  white-space: nowrap;       /* 숫자/단위를 한 줄로 유지 (줄바꿈 원하면 normal로) */
 }
-
+th, td {
+  overflow: hidden;
+  text-overflow: ellipsis;   /* 내용이 넘치면 ... 처리 */
+}
+  
 /* 페이지 전체 가로 넘침 안전장치 (디버그 끝나면 빼도 됨) */
 html, body { overflow-x: clip; }
 </style>
@@ -269,4 +272,5 @@ html, body { overflow-x: clip; }
 </script>
 </body>
 </html>
+
 
