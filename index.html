@@ -102,7 +102,44 @@ table {
 
 /* 페이지 전체 가로 넘침 안전장치 (디버그 끝나면 빼도 됨) */
 html, body { overflow-x: clip; }
+/* ▼ 표를 카드보다 좁게: 원하는 최대 폭만 차지하고 가운데 정렬 */
+:root { --table-max: 560px; } /* ← 마음에 드는 값으로 조절 (예: 520~600px) */
 
+.card table{
+  /* 이전에 width:100%로 되어 있었다면 이걸로 덮어쓰기 */
+  width: auto;
+  max-width: min(100%, var(--table-max));
+  margin: 0 auto;            /* 가운데 정렬 */
+  display: table;            /* 필요 시 block → table 로 복귀 */
+  table-layout: fixed;       /* 셀을 균등하게 줄이기 쉬움 */
+  border-collapse: collapse;
+}
+
+/* 셀 여백과 폰트 줄여 가로폭 절약 */
+.card table th,
+.card table td{
+  padding: 8px 10px;         /* 기존보다 작게 */
+  white-space: nowrap;       /* 줄바꿈 방지(숫자 표에 적합) */
+  overflow: hidden;
+  text-overflow: ellipsis;   /* 너무 길면 말줄임 */
+  font-size: 0.95rem;
+}
+
+/* 첫/마지막 열 비율 미세 조정(원하면 조절) */
+.card table tr > *:first-child { width: 40%; }
+.card table tr > *:last-child  { width: 60%; }
+
+/* 아주 작은 화면에서는 안전하게 100% 사용 */
+@media (max-width: 400px){
+  .card table{
+    max-width: 100%;
+  }
+  .card table th,
+  .card table td{
+    padding: 7px 8px;
+    font-size: 0.9rem;
+  }
+}
 </style>
 </head>
 <body>
@@ -270,3 +307,4 @@ html, body { overflow-x: clip; }
 </script>
 </body>
 </html>
+
